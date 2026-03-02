@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* ============================================
+   RecordIt Design System — Terminal Brutalism
+   ============================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Brand colors */
+  --color-green-signal: #22c55e;
+  --color-green-dim: #16a34a;
+  --color-green-light: #4ade80;
+  --color-green-pale: #86efac;
+  --color-green-glow: rgba(34, 197, 94, 0.15);
+  --color-green-border: rgba(34, 197, 94, 0.2);
+  --color-green-border-hover: rgba(34, 197, 94, 0.4);
+
+  /* Surfaces */
+  --color-surface: #111111;
+  --color-surface-2: #161616;
+  --color-surface-3: #1a1a1a;
+
+  /* Text */
+  --color-text-primary: #e5e7eb;
+  --color-text-muted: rgba(229, 231, 235, 0.55);
+  --color-text-dim: rgba(229, 231, 235, 0.25);
+}
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #e5e7eb;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Green glow text effect */
+.text-glow {
+  text-shadow: 0 0 20px rgba(34, 197, 94, 0.5), 0 0 40px rgba(34, 197, 94, 0.2);
+}
+
+/* Card with green border glow */
+.card-glow {
+  border: 1px solid var(--color-green-border);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card-glow:hover {
+  border-color: var(--color-green-border-hover);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+/* Pulsing dot */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.pulse-dot {
+  position: relative;
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 2px solid rgba(34, 197, 94, 0.4);
+  border-radius: 50%;
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fadeUp 0.7s ease-out forwards;
+}
+
+/* Scanlines overlay */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+/* Recording pulse */
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.animate-rec-pulse {
+  animation: rec-pulse 1.5s ease-in-out infinite;
+}
+
+/* Click ripple effect during recording */
+@keyframes click-ripple {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.animate-click-ripple {
+  animation: click-ripple 0.7s ease-out forwards;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.4);
+}

@@ -43,21 +43,24 @@ export default function ProjectDetailPage({
   const [activeTab, setActiveTab] = useState<Tab>("briefing");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    Promise.all([fetchProject(), fetchSessions()]).then(() =>
-      setLoading(false)
-    );
-  }, [projectId]);
-
-  async function fetchProject() {
+  const fetchProject = useCallback(async () => {
     const res = await fetch(`/api/projects/${projectId}`);
     if (res.ok) setProject(await res.json());
-  }
+  }, [projectId]);
 
   const fetchSessions = useCallback(async () => {
     const res = await fetch(`/api/sessions?project_id=${projectId}`);
     if (res.ok) setSessions(await res.json());
   }, [projectId]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      Promise.all([fetchProject(), fetchSessions()]).then(() =>
+        setLoading(false)
+      );
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [fetchProject, fetchSessions]);
 
   if (loading) {
     return (

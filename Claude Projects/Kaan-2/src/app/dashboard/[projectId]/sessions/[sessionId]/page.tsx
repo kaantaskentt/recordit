@@ -48,34 +48,37 @@ export default function SessionDetailPage({
   const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    Promise.all([fetchSession(), fetchSteps(), fetchFollowUps(), fetchWatchList()]).then(() =>
-      setLoading(false)
-    );
-  }, [sessionId]);
-
-  async function fetchSession() {
+  const fetchSession = useCallback(async () => {
     const res = await fetch(`/api/sessions/${sessionId}`);
     if (res.ok) setSession(await res.json());
-  }
+  }, [sessionId]);
 
-  async function fetchSteps() {
+  const fetchSteps = useCallback(async () => {
     const res = await fetch(`/api/steps?session_id=${sessionId}`);
     if (res.ok) setSteps(await res.json());
-  }
+  }, [sessionId]);
 
-  async function fetchFollowUps() {
+  const fetchFollowUps = useCallback(async () => {
     const res = await fetch(`/api/follow-ups?session_id=${sessionId}`);
     if (res.ok) setFollowUps(await res.json());
-  }
+  }, [sessionId]);
 
-  async function fetchWatchList() {
+  const fetchWatchList = useCallback(async () => {
     const res = await fetch(`/api/projects/${projectId}`);
     if (res.ok) {
       const project = await res.json();
       setWatchList(project.watch_list || []);
     }
-  }
+  }, [projectId]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      Promise.all([fetchSession(), fetchSteps(), fetchFollowUps(), fetchWatchList()]).then(() =>
+        setLoading(false)
+      );
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [fetchFollowUps, fetchSession, fetchSteps, fetchWatchList]);
 
   const seekTo = useCallback((seconds: number) => {
     if (videoRef.current) {

@@ -22,10 +22,7 @@ import {
   X,
   ChevronDown,
   ChevronUp,
-  Clipboard,
-  Check,
   Tag,
-  Activity,
 } from "lucide-react";
 import { timeAgo, formatDuration } from "@/lib/utils";
 import type { Project, Session } from "@/lib/types";
@@ -146,7 +143,6 @@ export default function ProjectDetailPage({
         <SessionsTab
           projectId={projectId}
           sessions={sessions}
-          project={project}
           onUpdate={fetchSessions}
         />
       )}
@@ -468,12 +464,10 @@ function BriefingTab({
 function SessionsTab({
   projectId,
   sessions,
-  project,
   onUpdate,
 }: {
   projectId: string;
   sessions: Session[];
-  project: Project;
   onUpdate: () => void;
 }) {
   const [showCreate, setShowCreate] = useState(false);

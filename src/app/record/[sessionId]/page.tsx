@@ -80,9 +80,18 @@ export default function RecordPage({
   const audioCtxRef = useRef<AudioContext | null>(null);
   const stoppingRef = useRef(false);
 
+  const fetchSession = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/sessions/${sessionId}`);
+      if (res.ok) setSession(await res.json());
+    } finally {
+      setLoading(false);
+    }
+  }, [sessionId]);
+
   useEffect(() => {
     fetchSession();
-  }, [sessionId]);
+  }, [fetchSession]);
 
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -97,15 +106,6 @@ export default function RecordPage({
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
   }, [phase]);
-
-  async function fetchSession() {
-    try {
-      const res = await fetch(`/api/sessions/${sessionId}`);
-      if (res.ok) setSession(await res.json());
-    } finally {
-      setLoading(false);
-    }
-  }
 
   function now(): string {
     const d = new Date();

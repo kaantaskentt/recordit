@@ -12,10 +12,6 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-defaults:
-  run:
-    working-directory: Claude Projects/Kaan-2
-
 jobs:
   quality:
     name: Lint, build, and audit
@@ -36,7 +32,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-          cache-dependency-path: Claude Projects/Kaan-2/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci

@@ -149,9 +149,6 @@ export async function generateBuildSpec(
     .sort((a, b) => b.count - a.count);
 
   // ---- Time estimates ----
-  // Rough heuristics: automate=0.5h/step to build, ai_assist=1.5h, manual=0h (stays manual)
-  const buildHours =
-    automateSteps.length * 0.5 + aiAssistSteps.length * 1.5;
   // Manual execution: 3min per automate step, 5min per ai_assist, 8min per manual
   const manualHoursPerExecution =
     (automateSteps.length * 3 + aiAssistSteps.length * 5 + manualSteps.length * 8) / 60;
